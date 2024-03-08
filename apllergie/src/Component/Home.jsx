@@ -26,6 +26,13 @@ function Home() {
 
   return (
     <div>
+      <header>
+        <Header />
+      </header>
+      <Routes>
+        <Route path="/connexion" element={<Connexion />} />
+        <Route path="/inscription" element={<Inscription />} />
+      </Routes>
       <h1>Liste des Produits</h1>
       <ul>
         {products.map((product, index) => (
@@ -36,6 +43,7 @@ function Home() {
             <p>Grade nutritionnel: {product.nutrition_grade_fr}</p>
             <p>Ingrédients: {product.ingredients_text}</p>
             <p>Informations nutritionnelles:</p>
+            <p>Allergènes: {product.allergens_tags.join(', ')}</p>
             <img src={product.image_url} alt={product.product_name} />
           </li>
         ))}

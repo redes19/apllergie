@@ -7,6 +7,7 @@ export default function header() {
         <nav>
             <Link to="/connexion">Connexion</Link>
             <Link to="/inscription">Inscription</Link>
+            <Link to="/product">Produits</Link>
         </nav>
    </header>
   )

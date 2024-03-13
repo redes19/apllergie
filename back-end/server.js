@@ -39,19 +39,19 @@ app.get("/user", async (req, res) => {
     }
 });
 
-const sequelize = new Sequelize('apllergie', 'root', 'moino121923', {
-    host : 'localhost',
-    dialect : 'mariadb'
-}); // test
+// const sequelize = new Sequelize('apllergie', 'root', 'moino121923', {
+//     host : 'localhost',
+//     dialect : 'mariadb'
+// }); // test
 
-( async() => {
-    try {
-        await sequelize.authenticate();
-        console.log('Connection has been established successfully.');
-      } catch (error) {
-        console.error('Unable to connect to the database:', error);
-      }
-})();
+// ( async() => {
+//     try {
+//         await sequelize.authenticate();
+//         console.log('Connection has been established successfully.');
+//       } catch (error) {
+//         console.error('Unable to connect to the database:', error);
+//       }
+// })();
 
 
 app.listen(3001, () => {

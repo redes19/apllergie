@@ -9,15 +9,15 @@ require("dotenv").config();
 app.use(cors());
 app.use(express.json());
 
-// const pool = mariadb.createPool({
-//     host: process.env.DB_HOST,
-//     user: process.env.DB_USER,
-//     password: process.env.DB_PASSWORD,
-//     database: process.env.DB_DTB, 
-//     connectionLimit: 10,
-//     waitTimeout: 10000, 
-//     maxConcurrency: 10,
-// });
+const pool = mariadb.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DTB, 
+    connectionLimit: 10,
+    waitTimeout: 10000, 
+    maxConcurrency: 10,
+});
 
 app.get("/user", async (req, res) => {
     let conn;

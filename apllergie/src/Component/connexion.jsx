@@ -1,7 +1,7 @@
 import React from 'react'
 
-export default function connexion() {
+export default function Connexion() {
   return (
-    <div>connexion</div>
+    <div>Connexion</div>
   )
 }

@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const bcrypt = require("bcrypt");
 const mariadb = require("mariadb");
-const {Sequelize} = require("sequelize"); // test
 let cors = require("cors");
 require("dotenv").config();
 
@@ -19,7 +18,7 @@ const pool = mariadb.createPool({
     maxConcurrency: 10,
 });
 
-app.get("/user", async (req, res) => {
+app.get("/api/user", async (req, res) => {
     let conn;
     try {
         conn = await pool.getConnection();
@@ -39,20 +38,51 @@ app.get("/user", async (req, res) => {
     }
 });
 
-// const sequelize = new Sequelize('apllergie', 'root', 'moino121923', {
-//     host : 'localhost',
-//     dialect : 'mariadb'
-// }); // test
+app.post("/api/user", async (req, res) => {
+    let conn;
 
-// ( async() => {
-//     try {
-//         await sequelize.authenticate();
-//         console.log('Connection has been established successfully.');
-//       } catch (error) {
-//         console.error('Unable to connect to the database:', error);
-//       }
-// })();
+    try {
+        conn = await pool.getConnection();
+        console.log("lancement de la requette");
 
+        const result = await conn.query("Select * FROM user WHERE email =?",
+        [req.body.email]
+        );
+
+        console.log('email', req.body.email);
+
+        if(result.length > 0){
+            return res.status(400).json({error: "cet email existe deja"});
+        }
+
+        console.log( "mot de passe", req.body.motdepasse);
+
+        const hashage = await bcrypt.hash(req.body.motdepasse, 10);
+        console.log(hashage);
+
+        const query = "INSERT INTO user (user, email, motdepasse) VALUE (?,?,?)";
+
+        const resutlInsert = await conn.query(query, [
+            req.body.user,
+            req.body.email,
+            hashage,
+        ]);
+
+        res.json({
+            message: "Utilisateur ajouté avec succés",
+            userId: req.body.id,
+        })
+
+    } catch (error) {
+        console.error("erreur", error);
+
+        res
+            .status(500)
+            .json({error : "erreur lors de la création"})
+    } finally{
+        if (conn) conn.end();
+    }
+});
 
 app.listen(3001, () => {
     console.log("Serveur à l'écoute sur le port 3001");

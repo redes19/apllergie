@@ -84,6 +84,45 @@ app.post("/api/user", async (req, res) => {
     }
 });
 
+app.post('/login', async (req, res) => {
+    let conn;
+  
+    try {
+      conn = await pool.getConnection();
+  
+      const result = await conn.query("SELECT * FROM user WHERE email = ?", [req.body.email]);
+  
+      if (result.length === 0) {
+        return res.status(400).json({ error: "Utilisateur non trouvé" });
+      }
+  
+      const user = result[0];
+  
+      const passwordMatch = await bcrypt.compare(req.body.motdepasse, user.motdepasse);
+  
+      if (!passwordMatch) {
+        return res.status(400).json({ error: "Mot de passe incorrect" });
+      }
+  
+      res.json({
+        success: true,
+        message: 'Utilisateur connecté avec succès',
+        user: {
+          id: user.id,
+          email: user.email,
+          user: user.user
+        }
+      });
+    } catch (error) {
+      console.error("Erreur lors de la connexion:", error);
+  
+      res.status(500).json({ error: "Erreur lors de la connexion" });
+    } finally {
+      if (conn) conn.release();
+    }
+  });
+  
+
 app.listen(3001, () => {
     console.log("Serveur à l'écoute sur le port 3001");
 });

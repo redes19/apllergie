@@ -27,6 +27,7 @@ function LoginForm() {
         });
         localStorage.setItem('isLogin', true);
         console.log(localStorage.getItem('user'));
+        console.log(localStorage);
       }
     } catch (error) {
       console.error('Erreur de connexion:', error.response.data.error);

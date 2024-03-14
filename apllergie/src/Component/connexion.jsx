@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 function LoginForm() {
+  const [isloggin, setIsLogin] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     motdepasse: ''
@@ -18,15 +19,18 @@ function LoginForm() {
     try {
       const response = await axios.post('http://localhost:3001/login', formData);
       console.log(response.data);
-      setSuccessMessage('Connexion réussie !'); // Définir le message de succès
-      // Réinitialiser les champs du formulaire après la soumission
-      setFormData({
-        email: '',
-        motdepasse: ''
-      });
+      if(response.status === 200){
+        setSuccessMessage('Connexion réussie !'); 
+        setFormData({
+          email: '',
+          motdepasse: ''
+        });
+        localStorage.setItem('isLogin', true);
+        console.log(localStorage.getItem('user'));
+      }
     } catch (error) {
       console.error('Erreur de connexion:', error.response.data.error);
-      setSuccessMessage(''); // Réinitialiser le message de succès en cas d'erreur
+      setSuccessMessage(''); 
     }
   };
 

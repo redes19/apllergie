@@ -9,8 +9,9 @@ export default function Allergie() {
         const fetchAllergenes = async () => {
             try {
                 const response = await axios.get('https://world.openfoodfacts.org/allergens.json');
-                if(response.data && response.data.allergens) {
-                    setAllergenes(response.data.allergens);
+                console.log("allergens",response.data.tags,"data",response.data);
+                if(response.data && response.data.tags) {
+                    setAllergenes(response.data.tags);
                     setLoading(false); 
                 }
             } catch (error) {
@@ -29,7 +30,7 @@ export default function Allergie() {
             ) : (
             <ul>
                 {allergenes.map((allergene, index) => (
-                <li key={index}>{allergene.id} - {allergene.name}</li>
+                <li key={index}>{allergene.name}</li>
             ))}
           </ul>
             )}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Deconnexion from "./Deconnexion.jsx";
 
 function LoginForm() {
   const [isloggin, setIsLogin] = useState(false);
@@ -60,6 +61,9 @@ function LoginForm() {
         </div>
         <button type="submit">Se connecter</button>
       </form>
+      <div>
+        <Deconnexion setIsLogin={setIsLogin} />
+      </div>
     </div>
   );
 }

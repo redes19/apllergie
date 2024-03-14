@@ -9,10 +9,14 @@ export default function Allergie() {
         const fetchAllergenes = async () => {
             try {
                 const response = await axios.get('https://world.openfoodfacts.org/allergens.json');
-                console.log("allergens",response.data.tags,"data",response.data);
-                if(response.data && response.data.tags) {
-                    setAllergenes(response.data.tags);
-                    setLoading(false); 
+                console.log("allergens", response.data.tags, "data", response.data);
+                if (response.data && response.data.tags) {
+                    const filteredAllergenes = response.data.tags.filter(allergene => {
+                        const language = ['en:', 'fr:']; 
+                        return language.some(langCode => allergene.id.startsWith(langCode));
+                    });
+                    setAllergenes(filteredAllergenes);
+                    setLoading(false);
                 }
             } catch (error) {
                 console.error('Erreur lors de la récupération des allergènes:', error);
